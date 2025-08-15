@@ -1,0 +1,64 @@
+<style>
+  p{
+    font-size: 12px;
+    color: red;
+  }
+</style>
+
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <div>
+    <label>Name:</label>
+    <input type="text" formControlName="name" />
+    <div *ngIf="name?.touched && name?.invalid">
+      <p *ngIf="name!.errors?.['required']">Name is required.</p>
+      <p *ngIf="name!.errors?.['maxlength']">Max 10 characters allowed.</p>
+      <p *ngIf="name!.errors?.['firstLetterNotCapital']">First letter must be capital.</p>
+      <p *ngIf="name!.errors?.['containsNumber']">No numbers allowed.</p>
+    </div>
+  </div>
+
+  <div>
+    <label>Email:</label>
+    <input type="email" formControlName="email" />
+    <div *ngIf="email?.touched && email?.invalid">
+      <p *ngIf="email!.errors?.['required']">Email is required.</p>
+      <p *ngIf="email!.errors?.['email']">Invalid email format.</p>
+      <p *ngIf="email!.errors?.['emailExists']">Email already exists.</p>
+    </div>
+  </div>
+
+  <div>
+  <label>Password:</label>
+  <input type="text" formControlName="password" />
+  <div *ngIf="password?.touched && password?.invalid" style="display: flex; flex-direction: column;">
+    <p *ngIf="password!.errors?.['required']">Password is required.</p>
+    <p *ngIf="password!.errors?.['minLength']">Minimum 8 characters.</p>
+    <p *ngIf="password!.errors?.['uppercase']">Must contain at least 1 uppercase letter.</p>
+    <p *ngIf="password!.errors?.['lowercase']">Must contain at least 1 lowercase letter.</p>
+    <p *ngIf="password!.errors?.['number']">Must contain at least 1 number.</p>
+    <p *ngIf="password!.errors?.['special']">Must contain at least 1 special character.</p>
+  </div>
+</div>
+
+  <div>
+    <label>Confirm Password:</label>
+    <input type="text" formControlName="confirmPassword" />
+    <div *ngIf="confirmPassword?.touched && confirmPassword?.invalid">
+      <p *ngIf="confirmPassword!.errors?.['required']">Confirm your password.</p>
+    </div>
+    <div *ngIf="form.errors?.['passwordMismatch'] && confirmPassword?.touched">
+      <p>Passwords do not match.</p>
+    </div>
+  </div>
+
+  <button type="submit" [disabled]="form.invalid">Submit</button>
+</form>
+
+<hr />
+
+<h3>Display Users (from Local Storage):</h3>
+<ul>
+  <li *ngFor="let user of users">
+    <strong>{{ user.name }}</strong> - {{ user.email }} -- {{user.password}}
+  </li>
+</ul>
